@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111713">
+  <title>Minecraft Sphere Layer Builder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">BUILD GUIDE</p>
+      <h1>Sphere Layer Builder</h1>
+      <p class="subtitle">Turn a sphere into clear, buildable Minecraft layers.</p>
+    </div>
+    <span class="status"><i></i> Local tool</span>
+  </header>
+
+  <main>
+    <form id="sphere-form" class="setup panel">
+      <div class="field primary-field">
+        <label for="diameter">Diameter</label>
+        <div class="input-suffix"><input id="diameter" type="number" min="3" max="200" step="1" value="25" required><span>blocks</span></div>
+      </div>
+      <div class="coordinate-fields">
+        <div class="field"><label for="center-x">Center X</label><input id="center-x" type="number" step="1" value="100" required></div>
+        <div class="field"><label for="center-y">Center Y</label><input id="center-y" type="number" step="1" value="70" required></div>
+        <div class="field"><label for="center-z">Center Z</label><input id="center-z" type="number" step="1" value="-200" required></div>
+      </div>
+      <div class="field">
+        <label for="sphere-type">Sphere type</label>
+        <select id="sphere-type"><option value="hollow">Hollow shell</option><option value="filled">Filled sphere</option></select>
+      </div>
+      <button class="generate" type="submit">Generate sphere</button>
+      <p id="form-error" class="form-error" role="alert"></p>
+    </form>
+
+    <section id="workspace" class="workspace" aria-live="polite">
+      <div class="viewer panel">
+        <div class="layer-heading">
+          <div>
+            <p class="eyebrow">CENTER → TOP</p>
+            <h2 id="sphere-title">25 Block Sphere</h2>
+            <p id="layer-summary" class="layer-summary"></p>
+          </div>
+          <div class="nav-controls">
+            <button id="previous-layer" class="icon-button" type="button" aria-label="Previous layer">↓</button>
+            <strong id="layer-progress"></strong>
+            <button id="next-layer" class="icon-button" type="button" aria-label="Next layer">↑</button>
+          </div>
+        </div>
+
+        <div class="canvas-toolbar">
+          <label class="check"><input id="show-adjacent" type="checkbox" checked> Show previous layer</label>
+          <div class="zoom-controls"><button id="zoom-out" type="button" aria-label="Zoom out">−</button><span id="zoom-value">100%</span><button id="zoom-in" type="button" aria-label="Zoom in">+</button></div>
+        </div>
+        <div class="compass north">NORTH <span>−Z</span></div>
+        <div class="grid-line">
+          <div class="compass west">WEST<br><span>−X</span></div>
+          <div id="canvas-scroller" class="canvas-scroller"><canvas id="layer-canvas" aria-label="Sphere layer grid"></canvas></div>
+          <div class="compass east">EAST<br><span>+X</span></div>
+        </div>
+        <div class="compass south">SOUTH <span>+Z</span></div>
+        <p class="grid-hint">Click any cell to inspect it and select its build row.</p>
+      </div>
+
+      <aside class="details">
+        <section class="panel info-card">
+          <p class="eyebrow">LAYER DETAILS</p>
+          <dl class="facts">
+            <div><dt>Relative layer</dt><dd id="relative-layer"></dd></div>
+            <div><dt>Minecraft Y</dt><dd id="world-y"></dd></div>
+            <div><dt>Mirror</dt><dd id="mirror-y"></dd></div>
+            <div><dt>Grid range</dt><dd id="grid-range"></dd></div>
+          </dl>
+        </section>
+
+        <section class="panel info-card">
+          <p class="eyebrow">CARDINAL EDGES</p>
+          <div id="edge-list" class="edge-list"></div>
+        </section>
+
+        <section class="panel info-card selection-card">
+          <div class="card-title-row">
+            <p class="eyebrow">BUILD ROW</p>
+            <select id="row-direction" aria-label="Build row direction"><option value="x">Along X</option><option value="z">Along Z</option></select>
+          </div>
+          <div id="row-info" class="empty-state">Select a row on the grid.</div>
+          <div class="divider"></div>
+          <p class="eyebrow">SELECTED CELL</p>
+          <div id="cell-info" class="empty-state">Select a block to see its coordinates.</div>
+        </section>
+
+        <section class="panel stats">
+          <div><strong id="layer-count">0</strong><span>this layer</span></div>
+          <div><strong id="upper-count">0</strong><span>upper half</span></div>
+          <div><strong id="total-count">0</strong><span>whole sphere</span></div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer>Even diameters use a geometric center 0.5 blocks east, up, and south of the entered coordinate.</footer>
+  <script src="sphere.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
